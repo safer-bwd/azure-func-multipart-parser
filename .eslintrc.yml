@@ -1,0 +1,19 @@
+---
+
+extends:
+- airbnb-base
+- 'plugin:jest/recommended'
+
+parser: babel-eslint
+
+plugins:
+- jest
+
+rules:
+  "linebreak-style": 0
+  "comma-dangle": 0
+  "no-underscore-dangle": 0
+
+env:
+  node: true
+  jest/globals: true

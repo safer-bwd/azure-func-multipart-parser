@@ -1,0 +1,41 @@
+{
+  "name": "azure-func-multipart-parser",
+  "version": "0.0.1",
+  "description": "multipart/form-data parser for Azure Functions JS",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/safer-bwd/azure-func-multipart-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/safer-bwd/azure-func-multipart-parser/issues"
+  },
+  "author": "Anton Safronov <safer.anton@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "test": "jest --colors",
+    "build": "cross-env NODE_ENV=production babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.4",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.5.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.5.1",
+    "jest": "^24.5.0"
+  },
+  "dependencies": {}
+}
