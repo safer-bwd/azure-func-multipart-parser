@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { parse } = require('../src');
+const stringFromBytes = require('../src/utils/string-from-bytes');
 
 it('should parse form with fields', () => {
   const bodyLines = [
@@ -13,37 +14,41 @@ it('should parse form with fields', () => {
     'Content-Disposition: form-data; name="age"',
     '',
     '23',
-    '--boundary--'
+    '--boundary--',
+    ''
   ];
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
     },
-    body: Buffer.from(bodyLines.join('\r\n'))
-  }
+    body: Buffer.from(bodyLines.join('\n'))
+  };
 
-  const {fields} = parse(request);
-  expect(fields).toEqual({name: 'Jon Snow', age: '23'});
+  const { fields } = parse(request);
+  expect(fields).toEqual({ name: 'Jon Snow', age: '23' });
 });
 
-it('should parse form with files', () => {
-  const fileBuffer = fs.readFileSync(path.join(__dirname, './_fixtures/test.xlsx'));
+it('should parse form with text file', () => {
   const bodyLines = [
     '--boundary',
-    'Content-Disposition: form-data; name="file"; filename="test.xlsx"',
+    'Content-Disposition: form-data; name="file"; filename="test.txt"',
+    'Content-Type: text/plain',
     '',
-    `${fileBuffer.toString('binary')}`,
-    '--boundary--'
+    'test',
+    'test',
+    '--boundary--',
+    ''
   ];
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
     },
     body: Buffer.from(bodyLines.join('\r\n'))
-  }
+  };
 
-  const {files} = parse(request);
-  const {file} = files;
-  expect(file.filename).toEqual('test.xlsx');
-  expect(Buffer.compare(fileBuffer, file.contenr)).toEqual(0);
+  const { files } = parse(request);
+  const { file } = files;
+  expect(file.filename).toEqual('test.txt');
+  const fileContent = stringFromBytes(Array.from(file.content));
+  expect(fileContent).toEqual('test\r\ntest');
 });
