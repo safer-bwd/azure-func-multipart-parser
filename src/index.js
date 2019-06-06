@@ -87,11 +87,11 @@ const parseBody = (body, boundary) => {
   const formItems = parseFormItems(body, boundary);
 
   const files = formItems
-    .filter(p => p.filename)
-    .reduce((acc, p) => ({ ...acc, [p.name]: p }), {});
+    .filter(item => item.filename)
+    .reduce((acc, item) => ({ ...acc, [item.name]: item }), {});
 
   const fields = formItems
-    .filter(p => !p.filename)
+    .filter(item => !item.filename)
     .reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {});
 
   return { files, fields };
