@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const parse = require('../src');
+const { parse } = require('../src');
 
 it('should parse form with fields', () => {
   const bodyLines = [
@@ -22,8 +22,8 @@ it('should parse form with fields', () => {
     body: Buffer.from(bodyLines.join('\r\n'))
   }
 
-  const { fields } = parse(request);
-  expect(fields).toEqual({ name: 'Jon Snow', age: '23' });
+  const {fields} = parse(request);
+  expect(fields).toEqual({name: 'Jon Snow', age: '23'});
 });
 
 it('should parse form with files', () => {
@@ -42,8 +42,8 @@ it('should parse form with files', () => {
     body: Buffer.from(bodyLines.join('\r\n'))
   }
 
-  const { files } = parse(request);
-  const { file } = files;
+  const {files} = parse(request);
+  const {file} = files;
   expect(file.filename).toEqual('test.xlsx');
   expect(Buffer.compare(fileBuffer, file.contenr)).toEqual(0);
 });
