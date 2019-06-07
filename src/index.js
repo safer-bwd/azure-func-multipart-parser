@@ -7,7 +7,7 @@ const createFormPart = (headers, data) => {
   const header = get(headers, 'Content-Disposition');
   const { name, filename } = parseHeaderOpts(header);
 
-  if (!filename) {
+  if (filename === undefined) {
     const value = stringFromBytes(data);
     return { name, value };
   }
@@ -97,8 +97,8 @@ const parseBody = (body, boundary) => {
     .reduce((acc, p) => ({ ...acc, [p.name]: p }), {});
 
   const fields = parts
-    .filter(p => !p.filename)
-    .reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {});
+    .filter(p => p.filename === undefined)
+    .reduce((acc, p) => ({ ...acc, [p.name]: p.value }), {});
 
   return { files, fields };
 };
