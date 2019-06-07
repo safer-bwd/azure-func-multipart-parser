@@ -4,8 +4,8 @@ import isLineFeed from './utils/is-line-feed';
 import stringFromBytes from './utils/string-from-bytes';
 
 const createFormPart = (headers, data) => {
-  const header = get(headers, 'Content-Disposition');
-  const { name, filename } = parseHeaderOpts(header);
+  const сontentDisposition = get(headers, 'Content-Disposition');
+  const { name, filename } = parseHeaderOpts(сontentDisposition);
 
   if (filename === undefined) {
     const value = stringFromBytes(data);
@@ -14,7 +14,7 @@ const createFormPart = (headers, data) => {
 
   const contentType = get(headers, 'Content-Type') || '';
   const type = contentType.split(';')[0] || 'application/octet-stream';
-  const { charset } = parseHeaderOpts(header);
+  const { charset } = parseHeaderOpts(contentType);
   const contentEncoding = get(headers, 'Content-Transfer-Encoding') || '';
   const encoding = contentEncoding.split(';')[0];
   const content = Buffer.from(data);
@@ -52,7 +52,7 @@ const getFormParts = (body, boundary) => {
       return;
     }
 
-    const line = stringFromBytes(bytes);
+    const line = stringFromBytes(bytes).trim();
 
     switch (state) {
       case 'before':
@@ -70,7 +70,7 @@ const getFormParts = (body, boundary) => {
         break;
       case 'data':
         if (isFormSep(line) || isFormEnd(line)) {
-          const part = createFormPart(partHeaders, partData);
+          const part = createFormPart(partHeaders, partData.slice(0, -2));
           parts.push(part);
           partHeaders = {};
           partData = [];

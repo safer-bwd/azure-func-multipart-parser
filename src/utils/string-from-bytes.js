@@ -1,2 +1,2 @@
 export default (bytes, encoding) => Buffer.from(bytes)
-  .toString(encoding).trim();
+  .toString(encoding);
