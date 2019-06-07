@@ -1,4 +1,2 @@
-export default bytes => bytes
-  .map(byte => String.fromCharCode(byte))
-  .join('')
-  .trim();
+export default (bytes, encode) => Buffer.from(bytes)
+  .toString(encode).trim();
