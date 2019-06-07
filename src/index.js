@@ -38,11 +38,11 @@ const getFormParts = (body, boundary) => {
   const parts = [];
   let partHeaders = {};
   let partData = [];
-  let state = 'before';
+  let state = 'preamble';
   let bytes = [];
 
   Array.from(bodyBuffer).forEach((byte) => {
-    if (state === 'after') {
+    if (state === 'epilogue') {
       return;
     }
 
@@ -55,26 +55,26 @@ const getFormParts = (body, boundary) => {
     const line = stringFromBytes(bytes).trim();
 
     switch (state) {
-      case 'before':
+      case 'preamble':
         if (isFormSep(line)) {
-          state = 'headers';
+          state = 'partHeaders';
         }
         break;
-      case 'headers':
+      case 'partHeaders':
         if (line) {
           const [key, val] = line.split(':').map(s => s.trim());
           partHeaders[key] = val;
         } else {
-          state = 'data';
+          state = 'partData';
         }
         break;
-      case 'data':
+      case 'partData':
         if (isFormSep(line) || isFormEnd(line)) {
           const part = createFormPart(partHeaders, partData.slice(0, -2));
           parts.push(part);
           partHeaders = {};
           partData = [];
-          state = isFormEnd(line) ? 'after' : 'headers';
+          state = isFormEnd(line) ? 'epilogue' : 'partHeaders';
         } else {
           partData.push(...bytes);
         }
