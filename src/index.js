@@ -116,5 +116,7 @@ const parse = (request) => {
 };
 
 export default {
-  parse
+  parse,
+  parseBody,
+  getBoundary
 };
