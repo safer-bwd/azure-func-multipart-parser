@@ -3,7 +3,7 @@ const path = require('path');
 
 const { parse } = require('../src');
 
-it('should parse form with fields', () => {
+it('should parse a form with fields', () => {
   const bodyLines = [
     '--boundary',
     'Content-Disposition: form-data; name="name"',
@@ -27,7 +27,7 @@ it('should parse form with fields', () => {
   expect(fields).toEqual({ name: 'Jon Snow', age: '23' });
 });
 
-it('should parse form with file#1', () => {
+it('should parse a form with a file#1', () => {
   const bodyLines = [
     '--boundary',
     'Content-Disposition: form-data; name="file"; filename="test.txt"',
@@ -53,7 +53,7 @@ it('should parse form with file#1', () => {
   expect(file.content.toString()).toEqual('Jon Snow\r\n23');
 });
 
-it('should parse form with file#2', () => {
+it('should parse a form with a file#2', () => {
   const fileBuffer = fs.readFileSync(path.join(__dirname, './_fixtures/test.xlsx'));
   const bodyLines = [
     '--boundary',
@@ -82,7 +82,7 @@ it('should parse form with file#2', () => {
   expect(Buffer.compare(fileBuffer, buffer)).toEqual(0);
 });
 
-it('should parse mixed form', () => {
+it('should parse a mixed form', () => {
   const bodyLines = [
     '--boundary',
     'Content-Disposition: form-data; name="name"',
