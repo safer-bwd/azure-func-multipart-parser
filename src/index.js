@@ -4,8 +4,8 @@ import isLineFeed from './utils/is-line-feed';
 import stringFromBytes from './utils/string-from-bytes';
 
 const createFormPart = (headers, data) => {
-  const сontentDisposition = get(headers, 'Content-Disposition');
-  const { name, filename } = parseHeaderOpts(сontentDisposition);
+  const contentDisposition = get(headers, 'Content-Disposition');
+  const { name, filename } = parseHeaderOpts(contentDisposition);
 
   if (filename === undefined) {
     const value = stringFromBytes(data);
