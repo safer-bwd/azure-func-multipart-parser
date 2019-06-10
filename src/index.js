@@ -93,7 +93,7 @@ const parseBody = (body, boundary) => {
   const parts = getFormParts(body, boundary);
 
   const files = parts
-    .filter(p => p.filename)
+    .filter(p => p.filename !== undefined)
     .reduce((acc, p) => ({ ...acc, [p.name]: p }), {});
 
   const fields = parts
