@@ -9,6 +9,6 @@
     "azure-functions-core-tools": "^1.x"
   },
   "dependencies": {
-    "azure-func-multipart-parser": "latest"
+    "azure-func-multipart-parser": "0.1.x"
   }
 }
