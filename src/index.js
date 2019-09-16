@@ -31,6 +31,15 @@ const createFormPart = (headers, data) => {
   const encoding = contentEncoding.split(';')[0];
   const content = Buffer.from(data);
 
+  /**
+   * @typedef {Object} fileObject
+   * @memberof resultOfParsing
+   * @property {string} filename The file name
+   * @property {string} type The content type
+   * @property {string} charset The charset
+   * @property {string} encoding The transfer encoding
+   * @property {Buffer} content The file content
+   */
   return {
     name,
     filename,
@@ -102,11 +111,11 @@ const getFormParts = (body, boundary) => {
 };
 
 /**
- * Parse a body
+ * Parse a body with multipart form
  * @memberof parser
  * @param {string|Buffer} body The request body (`request.body`)
  * @param {string} boundary The multipart form boundary
- * @return {ParseResult}
+ * @return {resultOfParsing}
  */
 const parseBody = (body, boundary) => {
   const parts = getFormParts(body, boundary);
@@ -119,6 +128,11 @@ const parseBody = (body, boundary) => {
     .filter(p => p.filename === undefined)
     .reduce((acc, p) => ({ ...acc, [p.name]: p.value }), {});
 
+  /**
+   * @typedef {Object} resultOfParsing
+   * @property {Object.<sting, sting>} fields Multipart form fields
+   * @property {Object.<sting, fileObject>} files Multipart form files
+   */
   return { files, fields };
 };
 
@@ -126,7 +140,7 @@ const parseBody = (body, boundary) => {
  * Parse a multipart form
  * @memberof parser
  * @param {Object} request The request object
- * @return {Object}
+ * @return {resultOfParsing}
  */
 const parse = (request) => {
   const { headers, body } = request;

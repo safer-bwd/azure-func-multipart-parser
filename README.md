@@ -29,6 +29,10 @@ npm install azure-func-multipart-parser --save
         -   [Parameters](#parameters-1)
     -   [parse](#parse)
         -   [Parameters](#parameters-2)
+-   [resultOfParsing](#resultofparsing)
+    -   [Properties](#properties)
+    -   [fileObject](#fileobject)
+        -   [Properties](#properties-1)
 
 ### parser
 
@@ -46,14 +50,14 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### parseBody
 
-Parse a body
+Parse a body with multipart form
 
 ##### Parameters
 
 -   `body` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Buffer](https://nodejs.org/api/buffer.html))** The request body (`request.body`)
 -   `boundary` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The multipart form boundary
 
-Returns **ParseResult** 
+Returns **[resultOfParsing](#resultofparsing)** 
 
 #### parse
 
@@ -63,4 +67,25 @@ Parse a multipart form
 
 -   `request` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The request object
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[resultOfParsing](#resultofparsing)** 
+
+### resultOfParsing
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### Properties
+
+-   `fields` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, sting>** Multipart form fields
+-   `files` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, fileObject>** Multipart form files
+
+#### fileObject
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+##### Properties
+
+-   `filename` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The file name
+-   `type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The content type
+-   `charset` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The charset
+-   `encoding` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The Transfer encoding
+-   `content` **[Buffer](https://nodejs.org/api/buffer.html)** The file content
