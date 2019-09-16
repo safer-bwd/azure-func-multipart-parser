@@ -8,7 +8,7 @@ Azure Functions JS 2.0 do not support _streams_, so using libraries like [parse-
 So you can use this simple parser.
 
 **Important:**
-Do not use the parser for multipart form with big files.
+Do not use multipart forms with big files in Azure Functions JS 2.0.
 
 ## Install
 
@@ -34,7 +34,7 @@ function.json
 
 index.js
 ```javascript
-const { parse } from 'azure-func-multipart-parser';
+import { parse } from 'azure-func-multipart-parser';
 
 module.exports = async (ctx) => {
   const { fields, files } = parse(ctx.req);
