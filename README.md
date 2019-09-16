@@ -27,7 +27,7 @@ function.json
       "name": "req",
       "type": "httpTrigger",
       "direction": "in",
-      "dataType": "binary",
+      "dataType": "binary"
     }
   ]
 }
