@@ -1,6 +1,6 @@
 {
   "name": "azure-func-multipart-parser",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Multipart form parser for Azure Functions JS",
   "main": "dist/index.js",
   "repository": {
@@ -13,6 +13,8 @@
   "author": "Anton Safronov <safer.anton@gmail.com>",
   "license": "ISC",
   "scripts": {
+    "doc": "documentation readme src/** -s API",
+    "doc_": "documentation readme src/** -s API --markdown-toc false",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --colors",

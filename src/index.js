@@ -3,6 +3,18 @@ import parseHeaderOpts from './utils/parse-header-options';
 import isLineFeed from './utils/is-line-feed';
 import stringFromBytes from './utils/string-from-bytes';
 
+/**
+ * Get a boundary from request headers
+ * @memberof parser
+ * @param {Object} headers The object of headers (`request.headers`)
+ * @return {string}
+ */
+const getBoundary = (headers) => {
+  const header = get(headers, 'Content-Type');
+  const opts = parseHeaderOpts(header);
+  return get(opts, 'boundary');
+};
+
 const createFormPart = (headers, data) => {
   const contentDisposition = get(headers, 'Content-Disposition');
   const { name, filename } = parseHeaderOpts(contentDisposition);
@@ -89,6 +101,13 @@ const getFormParts = (body, boundary) => {
   return parts;
 };
 
+/**
+ * Parse a body
+ * @memberof parser
+ * @param {string|Buffer} body The request body (`request.body`)
+ * @param {string} boundary The multipart form boundary
+ * @return {ParseResult}
+ */
 const parseBody = (body, boundary) => {
   const parts = getFormParts(body, boundary);
 
@@ -103,18 +122,21 @@ const parseBody = (body, boundary) => {
   return { files, fields };
 };
 
-const getBoundary = (headers) => {
-  const header = get(headers, 'Content-Type');
-  const opts = parseHeaderOpts(header);
-  return get(opts, 'boundary');
-};
-
+/**
+ * Parse a multipart form
+ * @memberof parser
+ * @param {Object} request The request object
+ * @return {Object}
+ */
 const parse = (request) => {
   const { headers, body } = request;
   const boundary = getBoundary(headers);
   return parseBody(body, boundary);
 };
 
+/**
+ * @module {Object} parser
+ */
 export default {
   parse,
   parseBody,
