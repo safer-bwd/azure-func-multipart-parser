@@ -1,0 +1,14 @@
+{
+  "name": "azure-func-multipart-parser-examples",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "azfun start",
+    "prepublish": "echo \"Error: not for publish\" && exit 1"
+  },
+  "peerDependencies": {
+    "azure-functions-core-tools": "^1.x"
+  },
+  "dependencies": {
+    "azure-func-multipart-parser": "latest"
+  }
+}

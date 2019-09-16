@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Form</title>
+</head>
+<body>
+
+<form id="POST">
+  <label for="name">name</label>
+  <input id ="name" name="name" value="Stark">
+  <label for="age">age</label>
+  <input id ="age" type="number" name="age" value="30">
+  <input type="submit" value="OK">
+</form>
+
+<script>
+  document.onsubmit = function(event) {
+    event.preventDefault();
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'form');
+    const formData = new FormData();
+    console.log(document);
+    formData.append('name', document.getElementById('name').value);
+    formData.append('age', document.getElementById('age').value);
+    xhr.send(formData);
+    xhr.onload = () => {
+      if (xhr.status == 200) {
+        const data = JSON.parse(xhr.response);
+        alert(`Form parsed: ${JSON.stringify(data)}`);
+      } else {
+        alert('Failed to parse form!');
+      };
+    };
+  };
+</script>
+</body>
+</html>

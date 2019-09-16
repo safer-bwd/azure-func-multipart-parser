@@ -14,7 +14,6 @@
   "license": "ISC",
   "scripts": {
     "doc": "documentation readme src/** -s API",
-    "doc_": "documentation readme src/** -s API --markdown-toc false",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --colors",
