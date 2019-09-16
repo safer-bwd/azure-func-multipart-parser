@@ -4,7 +4,7 @@
 
 Multipart form parser for Azure Functions JS 2.0.
 
-Azure Functions JS 2.0 do not support _streams_, so using libraries like [parse-multipart](https://github.com/freesoftwarefactory/parse-multipart) or [multer](https://github.com/expressjs/multer) may not be easy.
+Azure Functions JS 2.0 do not support _streams_, so using libraries like [multiparty](https://github.com/pillarjs/multiparty) or [multer](https://github.com/expressjs/multer) may not be easy.
 So you can use this simple parser.
 
 **Note:**
