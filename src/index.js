@@ -130,8 +130,8 @@ const parseBody = (body, boundary) => {
 
   /**
    * @typedef {Object} resultOfParsing
-   * @property {Object.<sting, sting>} fields Multipart form fields
-   * @property {Object.<sting, fileObject>} files Multipart form files
+   * @property {Object.<sting, sting>} fields
+   * @property {Object.<sting, fileObject>} files
    */
   return { files, fields };
 };

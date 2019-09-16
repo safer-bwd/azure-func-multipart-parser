@@ -7,7 +7,7 @@ Multipart form parser for Azure Functions JS 2.0.
 Azure Functions JS 2.0 do not support _streams_, so using libraries like [parse-multipart](https://github.com/freesoftwarefactory/parse-multipart) or [multer](https://github.com/expressjs/multer) may not be easy.
 So you can use this simple parser.
 
-**Important:**
+**Note:**
 Do not use multipart forms with big files in Azure Functions JS 2.0.
 
 ## Install
@@ -19,6 +19,7 @@ npm install azure-func-multipart-parser --save
 ## Usage
 
 function.json
+
 ```json
 {
   "bindings": [
@@ -33,6 +34,7 @@ function.json
 ```
 
 index.js
+
 ```javascript
 import { parse } from 'azure-func-multipart-parser';
 
@@ -40,7 +42,6 @@ module.exports = async (ctx) => {
   const { fields, files } = parse(ctx.req);
   ...
 };
-
 ```
 
 ## API
@@ -102,8 +103,8 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### Properties
 
--   `fields` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, sting>** Multipart form fields
--   `files` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, fileObject>** Multipart form files
+-   `fields` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, sting>** 
+-   `files` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)&lt;sting, fileObject>** 
 
 #### fileObject
 
