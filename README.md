@@ -23,14 +23,11 @@ function.json
 {
   "bindings": [
     {
-      "authLevel": "anonymous",
       "name": "req",
       "type": "httpTrigger",
       "direction": "in",
       "dataType": "binary",
-      ...
     }
-    ...
   ]
 }
 ```
