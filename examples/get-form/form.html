@@ -2,10 +2,9 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Form</title>
+  <title>Multipart form</title>
 </head>
 <body>
-
 <form id="POST">
   <label for="name">name</label>
   <input id ="name" name="name" value="Stark">
@@ -13,7 +12,6 @@
   <input id ="age" type="number" name="age" value="30">
   <input type="submit" value="OK">
 </form>
-
 <script>
   document.onsubmit = function(event) {
     event.preventDefault();
@@ -21,7 +19,6 @@
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'form');
     const formData = new FormData();
-    console.log(document);
     formData.append('name', document.getElementById('name').value);
     formData.append('age', document.getElementById('age').value);
     xhr.send(formData);
