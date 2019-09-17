@@ -36,11 +36,11 @@ function.json
 index.js
 
 ```javascript
-import { parse } from 'azure-func-multipart-parser';
+const { parse } = require('azure-func-multipart-parser');
 
 module.exports = async (ctx) => {
   const { fields, files } = parse(ctx.req);
-  ...
+  // ...
 };
 ```
 
