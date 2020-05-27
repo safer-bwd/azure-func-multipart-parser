@@ -25,18 +25,17 @@
     "verbose": true
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/node": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "babel-eslint": "^10.0.3",
-    "babel-jest": "^24.9.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.6",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.0.1",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "cross-env": "^5.2.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^22.21.0",
-    "jest": "^24.9.0"
+    "jest": "^26.0.1"
   }
 }
