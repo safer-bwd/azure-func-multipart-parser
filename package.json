@@ -17,7 +17,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --colors",
-    "build": "cross-env NODE_ENV=production babel src --out-dir dist",
+    "build": "babel src --out-dir dist",
     "prepublishOnly": "npm run build"
   },
   "jest": {
