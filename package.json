@@ -1,6 +1,6 @@
 {
   "name": "azure-func-multipart-parser",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Multipart form parser for Azure Functions JS",
   "main": "dist/index.js",
   "repository": {

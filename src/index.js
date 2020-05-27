@@ -97,7 +97,7 @@ const getFormParts = (body, boundary) => {
           partData = [];
           state = isFormEnd(line) ? 'epilogue' : 'partHeaders';
         } else {
-          partData.push(...bytes);
+          for (const x of bytes) partData.push(x);
         }
         break;
       default:
