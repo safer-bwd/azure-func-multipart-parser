@@ -73,6 +73,7 @@ const getFormParts = (body, boundary) => {
       return;
     }
 
+    // TODO: problem!
     const line = stringFromBytes(bytes).trim();
 
     switch (state) {
@@ -97,8 +98,7 @@ const getFormParts = (body, boundary) => {
           partData = [];
           state = isFormEnd(line) ? 'epilogue' : 'partHeaders';
         } else {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const x of bytes) partData.push(x);
+          partData = partData.concat(bytes);
         }
         break;
       default:
