@@ -8,7 +8,6 @@ import {
   isLF,
 } from './utils/bytes';
 
-
 /**
  * Checks if it is a request with multipart form
  * @memberof parser
@@ -17,10 +16,12 @@ import {
  */
 const isMultipartForm = (headers) => {
   const contentType = get(headers, 'Content-Type', '');
-  const headerOptions = parseНeader(contentType);
-  const optionNames = Object.keys(headerOptions).map(name => name.toLowerCase());
+  const mimeType = contentType.split(';')[0].trim().toLowerCase();
 
-  return optionNames.includes('multipart/form-data') || optionNames.includes('multipart/mixed');
+  return [
+    'multipart/form-data',
+    'multipart/mixed'
+  ].includes(mimeType);
 };
 
 /**
