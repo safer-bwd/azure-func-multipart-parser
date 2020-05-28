@@ -22,7 +22,7 @@ const getBoundary = (headers) => {
 
 const parsePartHeader = (partHeader) => {
   const str = bytesToString(partHeader).trim();
-  const headers = str.split('\r')
+  const headers = str.split('\n')
     .map(s => s.split(':').map(t => t.trim()))
     .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {});
 
