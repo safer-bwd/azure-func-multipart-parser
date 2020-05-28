@@ -1,7 +1,12 @@
 import get from './utils/get-ignore-case';
-import parseHeaderOpts from './utils/parse-header-options';
-import isLineFeed from './utils/is-line-feed';
-import stringFromBytes from './utils/string-from-bytes';
+import parseНeader from './utils/parse-header';
+import {
+  isLF,
+  endsWithCRLF,
+  isEmptyString,
+  bytesToString,
+  hasString
+} from './utils/bytes';
 
 /**
  * Get a boundary from request headers
@@ -10,26 +15,36 @@ import stringFromBytes from './utils/string-from-bytes';
  * @return {string}
  */
 const getBoundary = (headers) => {
-  const header = get(headers, 'Content-Type');
-  const opts = parseHeaderOpts(header);
-  return get(opts, 'boundary');
+  const contentType = get(headers, 'Content-Type');
+  const { boundary } = parseНeader(contentType);
+  return boundary;
 };
 
-const createFormPart = (headers, data) => {
-  const contentDisposition = get(headers, 'Content-Disposition');
-  const { name, filename } = parseHeaderOpts(contentDisposition);
+const parsePartHeader = (partHeader) => {
+  const str = bytesToString(partHeader).trim();
+  const headers = str.split('\r')
+    .map(s => s.split(':').map(t => t.trim()))
+    .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {});
 
-  if (filename === undefined) {
-    const value = stringFromBytes(data);
+  return headers;
+};
+
+const createFormPart = (partHeader, partData) => {
+  const headers = parsePartHeader(partHeader);
+  const contentDisposition = get(headers, 'Content-Disposition');
+  const { name, filename } = parseНeader(contentDisposition);
+
+  if (!filename) {
+    const value = bytesToString(partData);
     return { name, value };
   }
 
   const contentType = get(headers, 'Content-Type') || '';
   const type = contentType.split(';')[0] || 'application/octet-stream';
-  const { charset } = parseHeaderOpts(contentType);
+  const { charset } = parseНeader(contentType);
   const contentEncoding = get(headers, 'Content-Transfer-Encoding') || '';
   const encoding = contentEncoding.split(';')[0];
-  const content = Buffer.from(data);
+  const content = Buffer.from(partData);
 
   /**
    * @typedef {Object} fileObject
@@ -51,17 +66,19 @@ const createFormPart = (headers, data) => {
 };
 
 const getFormParts = (body, boundary) => {
-  const bodyBuffer = Buffer.isBuffer(body) ? body : Buffer.from(body);
-
-  const isFormSep = line => line === `--${boundary}`;
-  const isFormEnd = line => line === `--${boundary}--`;
+  const separatorStr = `--${boundary}`;
+  const endStr = `--${boundary}--`;
+  const isFormSeparator = bytes => hasString(bytes, separatorStr);
+  const isEndOfForm = bytes => hasString(bytes, endStr);
+  const isEndOfHeader = isEmptyString;
 
   const parts = [];
-  let partHeaders = {};
-  let partData = [];
   let state = 'preamble';
   let bytes = [];
+  let partHeader = [];
+  let partData = [];
 
+  const bodyBuffer = Buffer.isBuffer(body) ? body : Buffer.from(body);
   Array.from(bodyBuffer).forEach((byte) => {
     if (state === 'epilogue') {
       return;
@@ -69,34 +86,32 @@ const getFormParts = (body, boundary) => {
 
     bytes.push(byte);
 
-    if (!isLineFeed(byte)) {
+    if (!isLF(byte)) {
       return;
     }
 
-    // TODO: problem!
-    const line = stringFromBytes(bytes).trim();
-
     switch (state) {
       case 'preamble':
-        if (isFormSep(line)) {
-          state = 'partHeaders';
+        if (isFormSeparator(bytes)) {
+          state = 'partHeader';
         }
         break;
-      case 'partHeaders':
-        if (line) {
-          const [key, val] = line.split(':').map(s => s.trim());
-          partHeaders[key] = val;
-        } else {
+      case 'partHeader':
+        if (isEndOfHeader(bytes)) {
           state = 'partData';
+          partHeader = partHeader.slice(0, endsWithCRLF(bytes) ? -2 : -1);
+        } else {
+          partHeader = partHeader.concat(bytes);
         }
         break;
       case 'partData':
-        if (isFormSep(line) || isFormEnd(line)) {
-          const part = createFormPart(partHeaders, partData.slice(0, -2));
+        if (isFormSeparator(bytes) || isEndOfForm(bytes)) {
+          state = isEndOfForm(bytes) ? 'epilogue' : 'partHeader';
+          partData = partData.slice(0, endsWithCRLF(bytes) ? -2 : -1);
+          const part = createFormPart(partHeader, partData);
           parts.push(part);
-          partHeaders = {};
+          partHeader = [];
           partData = [];
-          state = isFormEnd(line) ? 'epilogue' : 'partHeaders';
         } else {
           partData = partData.concat(bytes);
         }
@@ -122,11 +137,11 @@ const parseBody = (body, boundary) => {
   const parts = getFormParts(body, boundary);
 
   const files = parts
-    .filter(p => p.filename !== undefined)
+    .filter(p => p.filename)
     .reduce((acc, p) => ({ ...acc, [p.name]: p }), {});
 
   const fields = parts
-    .filter(p => p.filename === undefined)
+    .filter(p => !p.filename)
     .reduce((acc, p) => ({ ...acc, [p.name]: p.value }), {});
 
   /**
