@@ -4,7 +4,7 @@
 
 Multipart form parser for Azure Functions JS 2.0.
 
-Azure Functions JS 2.0 do not support _streams_, so using libraries like [multiparty](https://github.com/pillarjs/multiparty) or [multer](https://github.com/expressjs/multer) may not be easy.
+Azure Functions JS 2.0 do not support _streams_ and using libraries like [multiparty](https://github.com/pillarjs/multiparty) or [multer](https://github.com/expressjs/multer) may not be easy.
 So you can use this simple parser.
 
 **Note:**
@@ -53,12 +53,14 @@ module.exports = async (ctx) => {
 #### Table of Contents
 
 -   [parser](#parser)
-    -   [getBoundary](#getboundary)
+    -   [isMultipartForm](#ismultipartform)
         -   [Parameters](#parameters)
-    -   [parseBody](#parsebody)
+    -   [getBoundary](#getboundary)
         -   [Parameters](#parameters-1)
-    -   [parse](#parse)
+    -   [parseBody](#parsebody)
         -   [Parameters](#parameters-2)
+    -   [parse](#parse)
+        -   [Parameters](#parameters-3)
 -   [resultOfParsing](#resultofparsing)
     -   [Properties](#properties)
     -   [fileObject](#fileobject)
@@ -67,6 +69,16 @@ module.exports = async (ctx) => {
 ### parser
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+#### isMultipartForm
+
+Checks if it is a request with multipart form
+
+##### Parameters
+
+-   `headers` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object of headers (`request.headers`)
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 #### getBoundary
 

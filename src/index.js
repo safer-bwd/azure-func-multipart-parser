@@ -1,12 +1,27 @@
 import get from './utils/get-ignore-case';
 import parseНeader from './utils/parse-header';
 import {
-  isLF,
-  endsWithCRLF,
-  isEmptyString,
   bytesToString,
-  hasString
+  endsWithCRLF,
+  hasString,
+  isEmptyString,
+  isLF,
 } from './utils/bytes';
+
+
+/**
+ * Checks if it is a request with multipart form
+ * @memberof parser
+ * @param {Object} headers The object of headers (`request.headers`)
+ * @return {boolean}
+ */
+const isMultipartForm = (headers) => {
+  const contentType = get(headers, 'Content-Type', '');
+  const headerOptions = parseНeader(contentType);
+  const optionNames = Object.keys(headerOptions).map(name => name.toLowerCase());
+
+  return optionNames.includes('multipart/form-data') || optionNames.includes('multipart/mixed');
+};
 
 /**
  * Get a boundary from request headers
@@ -15,8 +30,8 @@ import {
  * @return {string}
  */
 const getBoundary = (headers) => {
-  const contentType = get(headers, 'Content-Type');
-  const { boundary } = parseНeader(contentType);
+  const contentType = get(headers, 'Content-Type', '');
+  const { boundary = '' } = parseНeader(contentType);
   return boundary;
 };
 
@@ -160,8 +175,14 @@ const parseBody = (body, boundary) => {
  */
 const parse = (request) => {
   const { headers, body } = request;
+  if (!isMultipartForm(headers)) {
+    throw Error('Invalid content type!');
+  }
+
   const boundary = getBoundary(headers);
-  return parseBody(body, boundary);
+  const result = parseBody(body, boundary);
+
+  return result;
 };
 
 /**
@@ -169,6 +190,8 @@ const parse = (request) => {
  */
 export default {
   parse,
-  parseBody,
-  getBoundary
+
+  getBoundary,
+  isMultipartForm,
+  parseBody
 };

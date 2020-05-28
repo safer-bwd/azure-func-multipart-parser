@@ -17,6 +17,7 @@ it('should parse a form with fields', () => {
     '--boundary--',
     ''
   ];
+
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
@@ -39,6 +40,7 @@ it('should parse a form with a file#1', () => {
     '--boundary--',
     ''
   ];
+
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
@@ -66,6 +68,7 @@ it('should parse a form with a file#2', () => {
     '--boundary--',
     ''
   ];
+
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
@@ -102,6 +105,7 @@ it('should parse a mixed form', () => {
     '--boundary--',
     ''
   ];
+
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
@@ -131,6 +135,7 @@ it('should parse a form with a big file', () => {
     '--boundary--',
     ''
   ];
+
   const request = {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=boundary'
@@ -143,4 +148,15 @@ it('should parse a form with a big file', () => {
   expect(file.filename).toEqual('big.xlsx');
   expect(file.type).toEqual('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   expect(file.encoding).toEqual('base64');
+});
+
+it('should throw errow if not a multipart form', () => {
+  const request = {
+    headers: {
+      'Content-Type': 'application/json; boundary=boundary'
+    },
+    body: JSON.stringify({})
+  };
+
+  expect(() => parse(request)).toThrow('Invalid content type!');
 });
